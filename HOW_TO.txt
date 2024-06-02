@@ -1,0 +1,46 @@
+﻿Dokumentacja programu
+
+Opis programu
+Program umożliwia użytkownikowi prognozowanie wskaźników gospodarczych (PKB, długu prywatnego i publicznego) dla wybranego kraju (USA, Japonii lub UK) na podstawie dostępnych danych historycznych. Program korzysta z plików .csv zawierających dane dotyczące PKB, długu prywatnego i publicznego, a także z danych dotyczących wzrostu PKB. W wyniku działania programu zostaną wygenerowane wykresy z prognozami, oraz wypisane wartości korelacji Pearsona dla długu prywatnego i publicznego oraz wzrostu PKB.
+
+
+Zaczytywanie danych wejściowych
+Program wykorzystuje dane wejściowe pobrane z plików .csv. Dane są wczytywane za pomocą funkcji load_data() z pliku load_csv_data.py. Funkcja get_data() z pliku gui_input.py odczytuje wybór użytkownika (kraj) i przekazuje je jako argumenty do funkcji load_data().
+Dane pochodzą ze strony Banku Światowego (worldbank.org) oraz FRED (fred.stlouisfed.org). W programie wykorzystano bibliotekę „pandas”,  do wczytywania danych i ich przetwarzania. Program wczytuje cztery pliki CSV (dla każdego z krajów):
+public_debt.csv - dane o długu publicznym 
+gdp_growth.csv - dane o dynamice wzrostu PKB 
+gdp.csv - dane o poziomie PKB 
+private_debt.csv - dane o długu prywatnym 
+
+Pliki te zawierają dane w postaci kolumn z danymi numerycznymi oraz kolumn z datami. W programie ustawiono daty jako indeksy.
+
+
+Struktura programu i produkcja wyników
+1. main.py
+Główny plik programu. Importuje funkcję get_data() z pliku gui_input.py i wywołuje ją.
+
+2. gui_input.py
+Plik zawierający funkcję get_data(), która obsługuje interfejs graficzny programu. Funkcja odczytuje wybór użytkownika (kraj oraz wartość kroku) i przekazuje je jako argumenty do funkcji load_data() z pliku load_csv_data.py. Następnie wywołuje funkcję forecast() z pliku forecast_gdp_debt.py oraz correlation() z pliku correlation_gpd_debt.py, przekazując im wczytane dane. Na końcu wywołuje funkcję plot() z pliku plot_forecast_correlation.py, która generuje wykresy oraz wypisuje wartości korelacji Pearsona.
+
+3. load_csv_data.py
+Plik zawierający funkcję load_data(), która wczytuje dane z plików .csv. Funkcja przyjmuje jako argument nazwę kraju i zwraca 4 listy: public_debt (dług publiczny), gdp_growth (wzrost PKB), gdp (PKB) i private_debt (dług prywatny). 
+
+4. forecast_gdp_debt.py
+Plik zawierający funkcję forecast(), która na podstawie wczytanych danych prognozuje wartości PKB, długu prywatnego i publicznego dla kolejnych lat. Funkcja przyjmuje jako argumenty wczytane dane oraz wartość kroku (liczbę lat). Prognozy dokonywane są przy pomocy modelu ARIMA (ang. Autoregressive Integrated Moving Average), który jest popularnym modelem szeregów czasowych. Model ten składa się z trzech składowych: autoregresji (AR), różnicowania (I) oraz ruchomej średniej (MA). Modele ARIMA służą do prognozowania wartości szeregów czasowych.
+
+5. correlation_gpd_debt.py
+Plik zawierający funkcję correlation(), która na podstawie wczytanych danych oblicza wartości korelacji Pearsona między wzrostem PKB, a długiem publicznym, oraz między wzrostem PKB, a długiem prywatnym. Funkcja przyjmuje jako argumenty wczytane dane i zwraca wartości korelacji. Wartości dokładne wartości są wypisaywane na standardowym wyjściu. 
+
+6. plot_forecast_correlation.py
+Plik zawierający funkcję plot(), która generuje wykresy prognozowanej wartości PKB, długu prywatnego i publicznego oraz wypisuje wartości korelacji wzrostu PKB z długiem publicznym i prywatnym, do 5-tego miejsca po przecinku. Funkcja przyjmuje jako argumenty prognozowane wartości PKB, długu prywatnego i publicznego oraz wartości korelacji. Zwraca wygenerowane wykresy i wartości korelacji Pearsona.
+
+
+Autor programu: Szymon Grzybacz, nr albumu 405366
+
+
+
+
+
+
+
+
